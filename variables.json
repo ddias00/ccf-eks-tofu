@@ -1,0 +1,10 @@
+{ 
+  "aws_region" : "us-east-1",
+  "eks_cluster_name" : "cluster-name",
+
+  "carbon_tags" : {
+    "service" : "cloud-carbon-footprint",
+    "managed" : "tofu",
+    "owner"   : "email"
+  }
+}

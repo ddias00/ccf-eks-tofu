@@ -1,0 +1,134 @@
+client:
+  configmap:
+    resolver: ""
+
+  deployment:
+    replicaCount: 2
+
+    image:
+      repository: docker.io/cloudcarbonfootprint/client
+      tag: 'release-2024-02-11@sha256:66407474249539c0b758e9e8d5a6b29eeaa14770bce7df9d50340d52a6cffe72'
+      pullPolicy: IfNotPresent
+
+    imagePullSecrets: []
+
+    securityContext:
+      capabilities:
+        add:
+          - CHOWN
+          - SETGID
+          - SETUID
+        drop:
+          - ALL
+
+    resources: {}
+#      requests:
+#        cpu: 50m
+#        memory: 128Mi
+
+    affinity: []
+
+    tolerations: []
+
+    topologySpreadConstraints: []
+#      - labelSelector:
+#          matchLabels:
+#            app.kubernetes.io/component: client
+#        maxSkew: 1
+#        topologyKey: topology.kubernetes.io/zone
+#        whenUnsatisfiable: DoNotSchedule
+#      - labelSelector:
+#          matchLabels:
+#            app.kubernetes.io/component: client
+#        maxSkew: 1
+#        topologyKey: kubernetes.io/hostname
+#        whenUnsatisfiable: ScheduleAnyway
+
+  serviceAccount:
+    annotations: {}
+
+  service:
+    type: ClusterIP
+    port:
+      name: http
+      number: 80
+
+  ingress:
+    enabled: false
+    className: ''
+    hosts:
+      - host: cloud-carbon-footprint.example.com
+    tls: []
+#      - hosts:
+#          - cloud-carbon-footprint.example.com
+
+  pdb:
+    enabled: true
+    minAvailable: 1
+
+api:
+  # See https://github.com/cloud-carbon-footprint/cloud-carbon-footprint/blob/trunk/packages/api/.env.template for available variables
+  configmap: {}
+  # Example
+  #  AWS_USE_BILLING_DATA=true
+  #  AWS_ATHENA_DB_NAME=your-athena-db-name
+  #  AWS_ATHENA_DB_TABLE=your-athena-db-table
+  #  AWS_ATHENA_REGION=your-athena-region
+  #  AWS_ATHENA_QUERY_RESULT_LOCATION=s3://your-athena-query-results-location
+  #  AWS_BILLING_ACCOUNT_ID=your-billing-account-id
+  #  AWS_BILLING_ACCOUNT_NAME=your-billing-account-name
+
+  deployment:
+    replicaCount: 2
+
+    image:
+      repository: docker.io/cloudcarbonfootprint/api
+      tag: 'release-2024-02-11@sha256:7cd18e24888410f91c5b853c39526ccaa5ddadde834795c45801ddd778d986b1'
+      pullPolicy: IfNotPresent
+
+    imagePullSecrets: []
+
+    securityContext:
+      capabilities:
+        drop:
+          - ALL
+
+    resources: {}
+#      requests:
+#        cpu: 50m
+#        memory: 256Mi
+#      limits:
+#        memory: 512Mi
+
+    affinity: []
+
+    toleration: []
+
+    topologySpreadConstraints: []
+#      - labelSelector:
+#          matchLabels:
+#            app.kubernetes.io/component: api
+#        maxSkew: 1
+#        topologyKey: topology.kubernetes.io/zone
+#        whenUnsatisfiable: DoNotSchedule
+#      - labelSelector:
+#          matchLabels:
+#            app.kubernetes.io/component: api
+#        maxSkew: 1
+#        topologyKey: kubernetes.io/hostname
+#        whenUnsatisfiable: ScheduleAnyway
+
+  serviceAccount:
+    annotations: {}
+    # EKS annotation example
+    #  eks.amazonaws.com/role-arn: arn:aws:iam::AWS_ACCOUNT_ID:role/AWS_ROLE_NAME
+
+  service:
+    type: ClusterIP
+    port:
+      name: http
+      number: 80
+
+  pdb:
+    enabled: true
+    minAvailable: 1
